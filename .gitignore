@@ -1,0 +1,9 @@
+/.bundle
+/log/*
+/tmp/*
+/vendor/bundle/
+/db/*.sqlite3
+/db/*.sqlite3-journal
+.byebug_history
+*.swp
+.DS_Store
