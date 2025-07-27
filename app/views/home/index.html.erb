@@ -1,0 +1,9 @@
+<h1>Home#index</h1>
+<p>Find me in app/views/home/index.html.erb</p>
+<h1>Bem-vindo ao AquaFarm!</h1>
+<% if user_signed_in? %>
+  Olá, <%= current_user.email %>!
+<% else %>
+  <%= link_to 'Entrar', new_user_session_path %> ou
+  <%= link_to 'Cadastre-se', new_user_registration_path %>
+<% end %>
