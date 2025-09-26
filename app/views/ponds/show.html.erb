@@ -1,0 +1,14 @@
+<h1>Detalhes do Tanque</h1>
+
+<p>
+  <strong>Nome:</strong>
+  <%= @pond.name %>
+</p>
+
+<p>
+  <strong>Volume (L):</strong>
+  <%= @pond.volume %>
+</p>
+
+<%= link_to 'Editar', edit_pond_path(@pond) %> |
+<%= link_to 'Voltar', ponds_path %>

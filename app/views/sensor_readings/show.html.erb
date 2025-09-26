@@ -1,0 +1,18 @@
+<h1>Leitura de <%= l @sensor_reading.reading_time, format: :long %> — <%= @sensor_reading.pond.name %></h1>
+
+<table class="table">
+  <tbody>
+    <tr><th>Temperatura (°C)</th><td><%= @sensor_reading.temp_c %></td></tr>
+    <tr><th>pH</th><td><%= @sensor_reading.ph %></td></tr>
+    <tr><th>Oxigênio dissolvido (mg/L)</th><td><%= @sensor_reading.do_mg_l %></td></tr>
+    <tr><th>Turbidez (NTU)</th><td><%= @sensor_reading.turbidity_ntu %></td></tr>
+    <tr><th>Salinidade (ppt)</th><td><%= @sensor_reading.salinity_ppt %></td></tr>
+    <tr><th>Flag</th><td><%= @sensor_reading.flagged ? "Sim" : "Não" %> <%= @sensor_reading.flag_reason.present? ? "(#{@sensor_reading.flag_reason})" : "" %></td></tr>
+  </tbody>
+</table>
+
+<div class="mt-3 flex gap-2">
+  <%= link_to "Editar", [@sensor_reading.pond, @sensor_reading], class: "btn btn-primary" %>
+  <%= link_to "Apagar", @sensor_reading, data: { turbo_confirm: "Tem certeza?" }, method: :delete, class: "btn btn-danger" %>
+  <%= link_to "Voltar", pond_sensor_readings_path(@sensor_reading.pond), class: "btn" %>
+</div>

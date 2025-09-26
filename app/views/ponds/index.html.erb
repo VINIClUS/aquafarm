@@ -1,0 +1,28 @@
+
+<h1>Tanques</h1>
+
+<%= link_to 'Novo Tanque', new_pond_path %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Volume (L)</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ponds.each do |pond| %>
+      <tr>
+        <td><%= pond.name %></td>
+        <td><%= pond.volume %></td>
+        <td><%= pond.farm.name %></td>
+        <td><%= link_to 'Ver', pond_path(pond) %></td>
+        <td><%= link_to 'Editar', edit_pond_path(pond) %></td>
+        <td><%= link_to 'Apagar', pond_path(pond),
+                        data: { turbo_method: :delete, turbo_confirm: 'Tem certeza?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

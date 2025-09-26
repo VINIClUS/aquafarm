@@ -1,0 +1,25 @@
+<h1>Fazendas</h1>
+
+<%= link_to "Nova Fazenda", new_farm_path, class: "btn btn-primary mb-3" %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @farms.each do |farm| %>
+      <tr>
+        <td><%= farm.name %></td>
+        <td>
+          <%= link_to "Ver", farm_path(farm) %> |
+          <%= link_to "Editar", edit_farm_path(farm) %> |
+          <%= link_to "Apagar", farm_path(farm), 
+          data: { turbo_method: :delete, turbo_confirm: 'Tem certeza?' } %></td>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

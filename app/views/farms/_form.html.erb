@@ -1,0 +1,19 @@
+<%= form_with(model: @farm, local: true) do |f| %>
+  <% if @farm.errors.any? %>
+    <div class="alert alert-danger">
+      <ul>
+        <% @farm.errors.full_messages.each do |msg| %><li><%= msg %></li><% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name, "Nome da Fazenda" %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="actions mt-3">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancelar", farms_path, class: "btn" %>
+  </div>
+<% end %>

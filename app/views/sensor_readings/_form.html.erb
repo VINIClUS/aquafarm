@@ -1,0 +1,43 @@
+<%= form_with(model: [@pond, @sensor_reading], local: true) do |f| %>
+  <% if @sensor_reading.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@sensor_reading.errors.count, "erro") %> impediram o salvamento:</h4>
+      <ul>
+        <% @sensor_reading.errors.full_messages.each do |m| %><li><%= m %></li><% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :reading_time, "Data/Hora da leitura" %><br>
+    <%= f.datetime_local_field :reading_time, value: (@sensor_reading.reading_time&.in_time_zone&.strftime("%Y-%m-%dT%H:%M")) %>
+  </div>
+
+  <div class="grid">
+    <div class="field">
+      <%= f.label :temp_c, "Temperatura (°C)" %>
+      <%= f.number_field :temp_c, step: 0.01 %>
+    </div>
+    <div class="field">
+      <%= f.label :ph, "pH" %>
+      <%= f.number_field :ph, step: 0.01 %>
+    </div>
+    <div class="field">
+      <%= f.label :do_mg_l, "Oxigênio dissolvido (mg/L)" %>
+      <%= f.number_field :do_mg_l, step: 0.01 %>
+    </div>
+    <div class="field">
+      <%= f.label :turbidity_ntu, "Turbidez (NTU)" %>
+      <%= f.number_field :turbidity_ntu, step: 0.01 %>
+    </div>
+    <div class="field">
+      <%= f.label :salinity_ppt, "Salinidade (ppt)" %>
+      <%= f.number_field :salinity_ppt, step: 0.001 %>
+    </div>
+  </div>
+
+  <div class="actions mt-3">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "Cancelar", (@sensor_reading.persisted? ? [@pond, @sensor_reading] : pond_sensor_readings_path(@pond)), class: "btn" %>
+  </div>
+<% end %>

@@ -3,7 +3,7 @@ class CreateFarms < ActiveRecord::Migration[8.0]
     create_table :farms do |t|
       t.string :name
       t.string :subdomain
-
+      
       t.timestamps
     end
   end

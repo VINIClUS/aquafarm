@@ -13,6 +13,29 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  #resources :ponds
 
-  root to: 'home#index'
+  resources :farms do
+    resources :ponds
+  end
+
+
+  resources :ponds do
+    resources :sensor_readings do
+      collection do
+        get :timeseries   # /ponds/:pond_id/sensor_readings/timeseries
+      end
+    end
+  end
+  resources :sensor_readings, only: [:index, :show]
+
+  #namespace :ingest do
+  #  resources :sensor_readings, only: :create
+  #end
+
+  # config/routes.rb
+  post "ingest/sensor_readings", to: "ingest/ingest#sensor_readings"
+  #post "ingest/sensor_readings", to: "ingest#sensor_readings"
+
+  root to: 'farms#index'
 end

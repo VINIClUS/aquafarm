@@ -4,26 +4,31 @@ class PondPolicy < ApplicationPolicy
   # In most cases the behavior will be identical, but if updating existing
   # code, beware of possible changes to the ancestors:
   # https://gist.github.com/Burgestrand/4b4bc22f31c8a95c425fc0e30d7ef1f5
+ # class Scope < Scope
+  #  def resolve
+      # retorna apenas os ponds do tenant corrente (o acts_as_tenant já faz o default_scope)
+ #     scope.all
+ #   end
+  #end
 
-  class Scope < ApplicationPolicy::Scope
-    def index?
-    true
+  def index?   = true  # listado via policy_scope
+  def show?    = owns_farm?
+  def create?  = owns_farm?
+  def update?  = owns_farm?
+  def destroy? = owns_farm?
+  
+  class Scope < Scope
+    def resolve
+      scope.joins(:farm).where(farms: { user_id: user.id })
+    end
   end
 
-  def show?
-    true
-  end
+  private
 
-  def create?
-    user.present?
-  end
-
-  def update?
-    user.present? && record.farm_id == user.farm_id
-  end
-
-  def destroy?
-    user.present? && record.farm_id == user.farm_id
-  end
+  def owns_farm?
+    return false if record.farm_id.blank?
+    # evita acessar record.farm quando ainda não carregou
+    Farm.exists?(id: record.farm_id, user_id: user.id)
+    #record.farm.user_id == user.id
   end
 end
