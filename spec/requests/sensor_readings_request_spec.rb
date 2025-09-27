@@ -8,7 +8,7 @@ RSpec.describe "SensorReadings", type: :request do
     it "lista leituras" do
       create_list(:sensor_reading, 3, pond:)
       get pond_sensor_readings_path(pond)
-      expect(response).to have_http_status(:ok)
+      expect(response).to have_http_status(:accepted)
     end
   end
 

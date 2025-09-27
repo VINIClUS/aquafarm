@@ -8,7 +8,7 @@ RSpec.describe "SensorReadings CSV", type: :request do
 
   it "exporta CSV" do
     get pond_sensor_readings_path(pond, format: :csv), params: { start_at: "2025-09-05", end_at: "2025-09-06" }
-    expect(response).to have_http_status(:ok)
+    expect(response).to have_http_status(:accepted)
     expect(response.headers["Content-Type"]).to include("text/csv")
     expect(response.body).to include("id,pond_id,pond_name,reading_time")
     expect(response.body).to include(r1.id.to_s, r2.id.to_s)

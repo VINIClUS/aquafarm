@@ -19,8 +19,8 @@ class SensorReading < ApplicationRecord
 
   def auto_flag_limits
     reasons = []
-    reasons << "pH fora do ideal (6.5–8.5)" if ph.present? && (ph < 6.5 || ph > 8.5)
-    reasons << "Temperatura fora do ideal (24–32°C)" if temp_c.present? && (temp_c < 24 || temp_c > 32)
+    reasons << "pH fora do ideal (6.5-8.5)" if ph.present? && (ph < 6.5 || ph > 8.5)
+    reasons << "Temperatura fora do ideal (24-32°C)" if temp_c.present? && (temp_c < 24 || temp_c > 32)
     reasons << "Oxigênio dissolvido baixo (< 5 mg/L)" if do_mg_l.present? && do_mg_l < 5
     self.flagged = reasons.any?
     self.flag_reason = reasons.join("; ").presence

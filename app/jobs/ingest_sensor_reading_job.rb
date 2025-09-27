@@ -1,13 +1,14 @@
 # app/jobs/ingest_sensor_reading_job.rb
 class IngestSensorReadingJob < ApplicationJob
   #qqueue_as :default
+  include JobLogging
 
   def perform(payload)
     #user = User.find(payload["user_id"]) if payload["user_id"]
     #pond = resolve_pond(payload, user)
 
     pond = resolve_only_pond(payload)
-    #raise ActiveRecord::RecordNotFound, "Pond not found / not owned" unless pond
+    raise ActiveRecord::RecordNotFound, "Pond not found / not owned" unless pond
 
     reading_time = parse_time(payload["reading_time"]) || Time.zone.now
     metrics = payload["metrics"] || {}
@@ -22,7 +23,7 @@ class IngestSensorReadingJob < ApplicationJob
       salinity_ppt: metrics["salinity_ppt"]
     )
   rescue => e
-    Rails.logger.error("[IngestSensorReadingJob] Failed: #{e.class} - #{e.message}")
+    Rails.logger.error j("[IngestSensorReadingJob] Failed: #{e.class} - #{e.message}")
   end
 
   private

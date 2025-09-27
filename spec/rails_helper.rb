@@ -64,5 +64,14 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   # FactoryBot
+  #config.include FactoryBot::Syntax::Methods
+
+  require "rspec/rails"
+  require "factory_bot_rails"
+
+  RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
+  config.include ActiveJob::TestHelper
+  config.include ActiveSupport::Testing::TimeHelpers
+  end
 end

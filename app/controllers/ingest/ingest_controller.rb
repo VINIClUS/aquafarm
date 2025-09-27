@@ -1,25 +1,39 @@
 # app/controllers/ingest/ingest_controller.rb
 class Ingest::IngestController < ActionController::API
-  # POST /ingest/sensor_readings
+  include JsonLog
   #before_action :check_token
+  
   def sensor_readings
     payload = params.to_unsafe_h  # aceita hash aninhado "metrics"
-
+    started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     # valida existência do pond quando informado
     if payload["pond_id"].present? && !Pond.exists?(id: payload["pond_id"])
+      INGEST_LOGGER.warn j(event: "ingest.reject", reason: "pond_not_found", pond_id: payload["pond_id"])
       return render json: { error: "Pond inexistente" }, status: :not_found
     end
 
-    # Enquanto estiver testando/dev: execute síncrono p/ ver erros na hora
-    reading = IngestSensorReadingJob.perform_now(payload)
+    job = IngestSensorReadingJob.perform_later(payload)
+    elapsed = ((Process.clock_gettime(Process::CLOCK_MONOTONIC) - started) * 1000).round(1)
+    # provider_job_id pode ser nil dependendo do adapter; job_id sempre existe
+    # Log bem compacto: ID do pond, job e ISO8601
+    INGEST_LOGGER.info j(
+      event: "ingest.queued",
+      job_id: job.job_id,
+      provider_job_id: (job.try(:provider_job_id) rescue nil),
+      pond_id: payload["pond_id"],
+      has_external: payload.key?("pond_external_id"),
+      reading_time: payload["reading_time"],
+      metrics: payload["metrics"] ? payload["metrics"].keys : [],
+      duration_ms: elapsed
+    )
 
     render json: {
-      status: "ok",
-      id: reading.id,
-      pond_id: reading.pond_id,
-      reading_time: reading.reading_time
-    }, status: :created
+      status: "queued",
+      job_id: job.job_id,
+      provider_job_id: (job.try(:provider_job_id) rescue nil)
+    }, status: :accepted
   rescue => e
+    INGEST_LOGGER.error j(event: "ingest.error", error: e.class.to_s, message: e.message, backtrace: e.backtrace&.first(3))
     render json: { status: "error", error: e.class.to_s, message: e.message }, status: :unprocessable_entity
   end
 

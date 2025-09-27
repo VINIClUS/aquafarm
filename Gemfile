@@ -20,6 +20,8 @@ gem "jbuilder"
 # Use Tailwind CSS framework [https://tailwindcss.com/docs/guides/ruby-on-rails]
 gem "tailwindcss-rails", "~> 2.0"
 
+gem "lograge", "~> 0.14"
+
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 

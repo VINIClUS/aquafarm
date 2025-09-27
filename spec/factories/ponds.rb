@@ -1,12 +1,10 @@
 # spec/factories/ponds.rb
 FactoryBot.define do
-  factory :farm do
-    name { "Fazenda Teste" }
-  end
-
   factory :pond do
     association :farm
-    name { "Tanque #{SecureRandom.hex(2)}" }
+    sequence(:name) { |n| "Tanque #{n}" }
     volume { 1200 }
+    # se tiver external_id:
+    # sequence(:external_id) { |n| "pond-ext-#{n}" }
   end
 end
