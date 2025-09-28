@@ -1,5 +1,4 @@
 <h1>Leituras de Sensores <%= @pond ? "— #{@pond.name}" : "" %></h1>
-
 <div class="card mb-4">
     <%= form_with url: (@pond ? pond_sensor_readings_path(@pond) : sensor_readings_path),
               method: :get, local: true, scope: nil,
@@ -52,7 +51,7 @@
 </div>
 
 <table class="min-w-full divide-y divide-gray-200 bg-white shadow rounded-xl">
-  <thead class="bg-primary text-white">
+  <thead class="bg-primary-50">
     <tr>
       <th class="px-4 py-2 text-left text-sm font-medium">Data/Hora</th>
       <th class="px-4 py-2 text-left text-sm font-medium">Temp (°C)</th>

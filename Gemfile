@@ -18,7 +18,7 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 # Use Tailwind CSS framework [https://tailwindcss.com/docs/guides/ruby-on-rails]
-gem "tailwindcss-rails", "~> 2.0"
+gem "tailwindcss-rails", "~> 4.0"
 
 gem "lograge", "~> 0.14"
 

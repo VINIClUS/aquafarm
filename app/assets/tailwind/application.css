@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+/* Tailwind v4: onde escanear classes */
+@source "./app/views/**/*.{erb,html,haml,slim}";
+@source "./app/javascript/**/*.{js,ts,jsx,tsx}";
+@source "./app/helpers/**/*.rb";
+@source "./app/assets/stylesheets/**/*.css";

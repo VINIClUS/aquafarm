@@ -1,0 +1,17 @@
+<% content_for :title, "Recuperar senha" %>
+<% content_for :subtitle, "Enviaremos um link para seu email" %>
+
+<h1 class="mb-6 text-2xl font-semibold">Recuperar senha</h1>
+
+<%= form_with scope: resource_name, url: password_path(resource_name), method: :post, class: "space-y-5" do |f| %>
+  <div>
+    <label class="<%= ui_label_classes %>">Email</label>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: ui_input_classes %>
+  </div>
+
+  <%= f.submit "Enviar instruções", class: ui_btn_primary_classes %>
+<% end %>
+
+<div class="mt-6 text-center text-sm">
+  <%= link_to "Voltar ao login", new_session_path(resource_name), class: ui_link_classes %>
+</div>

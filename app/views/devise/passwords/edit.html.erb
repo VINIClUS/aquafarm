@@ -1,0 +1,23 @@
+<% content_for :title, "Definir nova senha" %>
+
+<h1 class="mb-6 text-2xl font-semibold">Definir nova senha</h1>
+
+<%= form_with model: resource, url: password_path(resource_name), method: :put, class: "space-y-5" do |f| %>
+  <%= f.hidden_field :reset_password_token %>
+
+  <div>
+    <label class="<%= ui_label_classes %>">Nova senha</label>
+    <%= f.password_field :password, autocomplete: "new-password", class: ui_input_classes %>
+  </div>
+
+  <div>
+    <label class="<%= ui_label_classes %>">Confirmar nova senha</label>
+    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: ui_input_classes %>
+  </div>
+
+  <%= f.submit "Atualizar senha", class: ui_btn_primary_classes %>
+<% end %>
+
+<div class="mt-6 text-center text-sm">
+  <%= link_to "Voltar ao login", new_session_path(resource_name), class: ui_link_classes %>
+</div>

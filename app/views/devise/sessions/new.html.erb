@@ -1,0 +1,35 @@
+<% content_for :title, "Entrar" %>
+<% content_for :subtitle, "Acesse sua conta para continuar" %>
+
+<h1 class="mb-6 text-2xl font-semibold">Entrar</h1>
+
+<%= form_with scope: resource_name, url: session_path(resource_name), method: :post, class: "space-y-5", data: { turbo: false } do |f| %>
+  <div>
+    <label class="<%= ui_label_classes %>">Email</label>
+    <%= f.email_field :email, autofocus: true, autocomplete: "email", class: ui_input_classes, placeholder: "voce@exemplo.com" %>
+  </div>
+
+  <div>
+    <label class="<%= ui_label_classes %>">Senha</label>
+    <%= f.password_field :password, autocomplete: "current-password", class: ui_input_classes, placeholder: "••••••••" %>
+  </div>
+
+  <% if devise_mapping.rememberable? %>
+    <div class="flex items-center justify-between">
+      <label class="inline-flex items-center gap-2 text-sm text-neutral-700">
+        <%= f.check_box :remember_me, class: "h-4 w-4 rounded border-neutral-300 text-indigo-600 focus:ring-indigo-500" %>
+        Lembrar-me
+      </label>
+      <%= link_to "Esqueceu a senha?", new_password_path(resource_name), class: ui_link_classes %>
+    </div>
+  <% end %>
+
+  <div class="pt-2">
+    <%= f.submit "Entrar", class: ui_btn_primary_classes %>
+  </div>
+<% end %>
+
+<div class="mt-6 text-center text-sm text-neutral-600">
+  Não tem conta?
+  <%= link_to "Cadastre-se", new_registration_path(resource_name), class: ui_link_classes %>
+</div>
