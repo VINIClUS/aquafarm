@@ -10,22 +10,23 @@
     </div>
   <% end %>
 
-  <div>
-    <%= f.label :farm_id, "Fazenda" %><br>
-    <%= f.collection_select :farm_id, policy_scope(Farm), :id, :name %>
+  <div class="field">
+    <%= f.label :farm_id, "Fazenda", class: ui_label_classes %>
+    <%= f.collection_select :farm_id, policy_scope(Farm), :id, :name, class: ui_input_classes %>
   </div>
 
-  <div>
-    <%= f.label :name, "Nome do Tanque" %><br>
-    <%= f.text_field :name %>
+  <div class="field">
+    <%= f.label :name, "Nome do Tanque", class: ui_label_classes %>
+    <%= f.text_field :name, class: ui_input_classes %>
   </div>
 
-  <div>
-    <%= f.label :volume, "Volume (L)" %><br>
-    <%= f.number_field :volume %>
+  <div class="field">
+    <%= f.label :volume, "Volume (L)", class: ui_label_classes %>
+    <%= f.number_field :volume, class: ui_input_classes %>
   </div>
 
-  <div>
-    <%= f.submit %>
+  <div class="actions mt-3">
+    <%= f.submit "Salvar", class: ui_btn_primary%>
+    <%= link_to "Cancelar", ponds_path, class: ui_btn_danger %>
   </div>
 <% end %>

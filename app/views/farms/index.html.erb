@@ -1,25 +1,36 @@
-<h1>Fazendas</h1>
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg mb-3">
+  <h1 class="<%= ui_title_classes %>">Fazendas</h1>
+  <hr>
+</div>
 
-<%= link_to "Nova Fazenda", new_farm_path, class: "btn btn-primary mb-3" %>
+<div class="mb-3">
+  <%= link_to "Nova Fazenda", new_farm_path, class: ui_btn_primary %>
+</div>
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+  <div class="bg-white dark:bg-gray-900">
+    <table class="<%= t_table %>">
+      <thead class="<%= t_thead %>">
+        <tr>
+          <th class="<%= t_th %>">Nome</th>
+          <th class="<%= t_th %>">Ações</th>
+        </tr>
+      </thead>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Nome</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @farms.each do |farm| %>
-      <tr>
-        <td><%= farm.name %></td>
-        <td>
-          <%= link_to "Ver", farm_path(farm) %> |
-          <%= link_to "Editar", edit_farm_path(farm) %> |
-          <%= link_to "Apagar", farm_path(farm), 
-          data: { turbo_method: :delete, turbo_confirm: 'Tem certeza?' } %></td>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      <tbody>
+        <% @farms.each do |farm| %>
+          <tr class="<%= t_tr %>">
+            <td class="<%= t_td %>"><%= farm.name %></td>
+            <td class="<%= t_td %>">
+              <div class="<%= t_actions %>">
+                <%= link_to "Ver", farm_path(farm), class:t_link_primary %> |
+                <%= link_to "Editar", edit_farm_path(farm), class:t_link_primary %> |
+                <%= link_to "Apagar", farm_path(farm), class:t_link_danger,
+                data: { turbo_method: :delete, turbo_confirm: 'Tem certeza?' } %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

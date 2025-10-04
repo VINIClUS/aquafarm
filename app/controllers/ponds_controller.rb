@@ -19,7 +19,8 @@ class PondsController < ApplicationController
     #@farm = policy_scope(Farm).find(params[:farm_id])
     #@farm = policy_scope(Farm).first!
     #@pond = @farm.ponds.new
-    @farm = policy_scope(Farm).first! if policy_scope(Farm).count == 1
+    #@farm = policy_scope(Farm).first! if policy_scope(Farm).count == 1
+    
     @pond = Pond.new(farm: @farm)
     authorize @pond
   end
@@ -28,6 +29,7 @@ class PondsController < ApplicationController
   def create
     #@farm = policy_scope(Farm).find(params[:farm_id])
     #@pond = @farm.ponds.new(pond_params)
+    @farm = set_farm()
     @pond = policy_scope(Pond).new(pond_params)
     #@farm = policy_scope(Farm).find_by(id: pond_params[:farm_id])
     #@pond = @farm.ponds.new(pond_params.except(:farm_id))
@@ -54,6 +56,7 @@ class PondsController < ApplicationController
     else
       # reenvie @farm se só houver 1 para o form saber usar hidden novamente
       @farm = policy_scope(Farm).first if policy_scope(Farm).count == 1
+      #@farm = set_farm(params[:farm_id] || nil) || @pond.farm
       render :new, status: :unprocessable_entity
 
     end
@@ -69,7 +72,9 @@ class PondsController < ApplicationController
   private
 
   def set_farm
-    @farm = policy_scope(Farm).find_by(id: params[:farm_id])  # garante que é do usuário
+    @farm = policy_scope(Farm).find_by(id: params[:farm_id]) if params[:farm_id] # garante que é do usuário
+    @farm ||= policy_scope(Farm).first!
+    return if @farm.present?
   rescue ActiveRecord::RecordNotFound
     redirect_to farms_path, alert: 'Fazenda não encontrada.'
   end

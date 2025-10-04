@@ -8,6 +8,7 @@ class SensorReadingsController < ApplicationController
 
   # GET /ponds/:pond_id/sensor_readings/timeseries.json?n=...&metrics=...&stride=...&start_at=...&end_at=...
   def timeseries
+    set_pond if params[:pond_id].present? 
     authorize @pond, :show?
 
     n       = params[:n].presence&.to_i || 200

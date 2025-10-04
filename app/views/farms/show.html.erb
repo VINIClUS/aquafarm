@@ -1,18 +1,43 @@
-<h1><%= @farm.name %></h1>
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg mb-3">
+  <h1 class="<%= ui_title_classes %>"><%= @farm.name %> | Tanques</h1>
+  <hr>
+</div>
 
-<h2>Tanques</h2>
-<%= link_to "Adicionar Tanque", new_farm_pond_path(@farm), class: "btn btn-primary" %>
+<div class="mb-3 mt-3">
+    <%= link_to "Adicionar Tanque", new_farm_pond_path(@farm), class: ui_btn_primary %>
+</div>
 
-<ul>
-  <% @farm.ponds.each do |pond| %>
-    <li>
-      <%= link_to pond.name, pond_path(pond) %> — <%= pond.volume %> m³
-    </li>
-  <% end %>
-</ul>
-
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+  <div class="bg-white dark:bg-gray-900">
+    <table class="<%= t_table %>">
+      <thead class="<%= t_thead %>">
+        <tr>
+          <th class="<%= t_th %>">Nome</th>
+          <th class="<%= t_th %>">Volume (L)</th>
+          <th class="<%= t_th %>">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @farm.ponds.each do |pond| %>
+          <tr class="<%= t_tr %>">
+            <td class="<%= t_td %>"><%= pond.name %></td>
+            <td class="<%= t_td %>"><%= pond.volume %></td>
+            <td class="<%= t_td %>">
+              <div class="<%= t_actions %>">
+                <%= link_to "Ver", pond_path(pond), class:t_link_primary %> |
+                <%= link_to "Editar", edit_pond_path(pond), class:t_link_primary %> |
+                <%= link_to "Apagar", pond_path(pond), class:t_link_danger,
+                data: { turbo_method: :delete, turbo_confirm: 'Tem certeza?' } %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div >
 <div class="mt-3 flex gap-2">
-  <%= link_to "Editar Fazenda", edit_farm_path(@farm), class: "btn btn-primary" %>
-  <%= link_to "Remover Fazenda", farm_path(@farm), method: :delete, data: { turbo_confirm: "Confirma remover?" }, class: "btn btn-danger" %>
-  <%= link_to "Voltar", farms_path, class: "btn" %>
+  <%= link_to "Editar Fazenda", edit_farm_path(@farm), class: ui_btn_primary %>
+  <%= link_to "Remover Fazenda", farm_path(@farm), method: :delete, data: { turbo_confirm: "Confirma remover?" }, class: ui_btn_danger %>
+  <%= link_to "Voltar", farms_path, class: ui_btn_primary %>
 </div>

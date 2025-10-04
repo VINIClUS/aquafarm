@@ -1,28 +1,53 @@
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg mb-3">
+  <h1 class="<%= ui_title_classes %>">Tanques</h1>
+  <hr>
+</div>
 
-<h1>Tanques</h1>
+<div class="mb-3">
+  <%= link_to 'Novo Tanque', new_pond_path, class: ui_btn_primary %>
+</div>
 
-<%= link_to 'Novo Tanque', new_pond_path %>
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+  <div class="bg-white dark:bg-gray-900">
+        <!--
+        <label for="table-search" class="sr-only">Buscar</label>
+        <div class="relative mt-1">
+            <div class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                </svg>
+            </div>
+            <input type="text" id="table-search" class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Buscar itens">
+        </div>
+    </div> -->
+    <table class="<%= t_table %>">
+      <thead class="<%= t_thead %>">
+        <tr>
+          <th scope="col" class="<%= t_th %>">Nome</th>
+          <th scope="col" class="<%= t_th %>">Volume (L)</th>
+          <th scope="col" class="<%= t_th %>">Fazenda</th>
+          <th scope="col" colspan="3" class="<%= t_th %>">Ação</th>
+          <!-- <th colspan="3"></th> -->
+        </tr>
+      </thead>
 
-<table>
-  <thead>
-    <tr>
-      <th>Nome</th>
-      <th>Volume (L)</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @ponds.each do |pond| %>
-      <tr>
-        <td><%= pond.name %></td>
-        <td><%= pond.volume %></td>
-        <td><%= pond.farm.name %></td>
-        <td><%= link_to 'Ver', pond_path(pond) %></td>
-        <td><%= link_to 'Editar', edit_pond_path(pond) %></td>
-        <td><%= link_to 'Apagar', pond_path(pond),
-                        data: { turbo_method: :delete, turbo_confirm: 'Tem certeza?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      <tbody>
+        <% @ponds.each do |pond| %>
+          <tr class="<%= t_tr %>">
+            <td class="<%= t_td %>"><%= pond.name %></td>
+            <td class="<%= t_td %>"><%= pond.volume %></td>
+            <td class="<%= t_td %>"><%= pond.farm.name %></td>
+            <td class="<%= t_td %>">
+              <div class="<%= t_actions %>">
+                <%= link_to 'Ver', pond_path(pond), class: t_link_primary %> |
+                <%= link_to 'Editar', edit_pond_path(pond), class: t_link_primary %> |
+                <%= link_to 'Apagar', pond_path(pond), class: t_link_danger,
+                            data: { turbo_method: :delete, turbo_confirm: 'Tem certeza?' } %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -8,12 +8,12 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name, "Nome da Fazenda" %>
-    <%= f.text_field :name %>
+    <%= f.label :name, "Nome da Fazenda", class: ui_label_classes %>
+    <%= f.text_field :name, class: ui_input_classes %>
   </div>
 
   <div class="actions mt-3">
-    <%= f.submit class: "btn btn-primary" %>
-    <%= link_to "Cancelar", farms_path, class: "btn" %>
+    <%= f.submit "Salvar", class: ui_btn_primary %>
+    <%= link_to "Cancelar", farms_path, class: ui_btn_danger %>
   </div>
 <% end %>

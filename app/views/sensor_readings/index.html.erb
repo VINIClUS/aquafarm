@@ -1,34 +1,37 @@
-<h1>Leituras de Sensores <%= @pond ? "— #{@pond.name}" : "" %></h1>
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg mb-3">
+  <h1 class="<%= ui_title_classes %>">Leituras de Sensores <%= @pond ? "— #{@pond.name}" : "" %></h1>
+  <hr>
+</div>
 <div class="card mb-4">
     <%= form_with url: (@pond ? pond_sensor_readings_path(@pond) : sensor_readings_path),
               method: :get, local: true, scope: nil,
-              class: "grid grid-cols-1 md:grid-cols-5 gap-3 items-end" do |f| %>
+              class: "grid grid-cols-1 md:grid-cols-3 gap-3 items-end" do |f| %>
     
-        <div class="md:col-span-2">
-          <%= label_tag :pond_id, "Pond", class: "block text-sm mb-1" %>
+        <div class="md:col-span-1">
+          <%= label_tag :pond_id, "Tanque", class: ui_label_classes %>
           <%= select_tag :pond_id,
                 options_from_collection_for_select(
                   policy_scope(Pond), :id, :name,
                   params[:pond_id].presence || @pond&.id
                 ),
-                class: "input w-full" %>
+                class: ui_input_classes %>
         </div>
 
         <div>
-          <%= f.label :start_at, "Início", class: "block text-sm mb-1" %>
-          <%= f.date_field :start_at, value: params[:start_at], class: "input w-full" %>
+          <%= f.label :start_at, "Início", class: ui_label_classes %>
+          <%= f.date_field :start_at, value: params[:start_at], class: ui_input_classes %>
         </div>
 
         <div>
-          <%= f.label :end_at, "Fim", class: "block text-sm mb-1" %>
-          <%= f.date_field :end_at, value: params[:end_at], class: "input w-full" %>
+          <%= f.label :end_at, "Fim", class: ui_label_classes %>
+          <%= f.date_field :end_at, value: params[:end_at], class: ui_input_classes %>
         </div>
 
         <div class="flex gap-2">
-          <%= f.submit "Filtrar", class: "btn btn-primary" %>
+          <%= f.submit "Filtrar", class: ui_btn_primary %>
           <%= link_to "Limpar",
                 sensor_readings_path,
-                class: "btn btn-accent" %>
+                class: ui_btn_danger %>
         </div>
     <% end %>
 </div>
@@ -37,49 +40,52 @@
   <%= link_to "Exportar CSV",
       (@pond ? pond_sensor_readings_path(@pond, format: :csv, start_at: params[:start_at], end_at: params[:end_at]) :
                sensor_readings_path(format: :csv, start_at: params[:start_at], end_at: params[:end_at])),
-      class: "btn btn-outline" %>
+      class: ui_btn_primary %>
 
   <% if @pond %>
     <%= link_to "JSON (médias diárias)",
         pond_sensor_readings_path(@pond, format: :json, aggregate: :daily, start_at: params[:start_at], end_at: params[:end_at]),
-        class: "btn btn-secondary" %>
+        class: ui_btn_primary %>
 
     <%= link_to "JSON (série temporal)",
         timeseries_pond_sensor_readings_path(@pond, format: :json, n: 300, metrics: "temp_c,ph", stride: 1, start_at: params[:start_at], end_at: params[:end_at]),
-        class: "btn btn-secondary" %>
+        class: ui_btn_primary %>
   <% end %>
 </div>
 
-<table class="min-w-full divide-y divide-gray-200 bg-white shadow rounded-xl">
-  <thead class="bg-primary-50">
-    <tr>
-      <th class="px-4 py-2 text-left text-sm font-medium">Data/Hora</th>
-      <th class="px-4 py-2 text-left text-sm font-medium">Temp (°C)</th>
-      <th class="px-4 py-2 text-left text-sm font-medium">pH</th>
-      <th class="px-4 py-2 text-left text-sm font-medium">OD (mg/L)</th>
-      <th class="px-4 py-2 text-left text-sm font-medium">Turb.(NTU)</th>
-      <th class="px-4 py-2 text-left text-sm font-medium">Sal.(ppt)</th>
-      <th class="px-4 py-2 text-left text-sm font-medium">Ações</th>
-    </tr>
-  </thead>
-  <tbody class="divide-y divide-gray-100">
-    <% @sensor_readings.each do |r| %>
-      <tr class="hover:bg-neutral-light/60">
-        <td class="px-4 py-2 text-sm"><%= l r.reading_time, format: :short %></td>
-        <td class="px-4 py-2 text-sm"><%= r.temp_c %></td>
-        <td class="px-4 py-2 text-sm"><%= r.ph %></td>
-        <td class="px-4 py-2 text-sm"><%= r.do_mg_l %></td>
-        <td class="px-4 py-2 text-sm"><%= r.turbidity_ntu %></td>
-        <td class="px-4 py-2 text-sm"><%= r.salinity_ppt %></td>
-        <td class="px-4 py-2 text-sm">
-          <div class="flex gap-2">
-            <%= link_to "Ver", r, class: "btn btn-outline" %>
-            <%= button_to "Apagar", r, method: :delete, class: "btn btn-accent",
-                  form: { data: { turbo_confirm: "Tem certeza?" } } %>
-          </div>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+  <div class="bg-white dark:bg-gray-900">
+    <table class="<%= t_table %>">
+      <thead class="<%= t_thead %>">
+        <tr>
+          <th class="<%= t_th_small %>">Data/Hora</th>
+          <th class="<%= t_th_small %>">Temp (°C)</th>
+          <th class="<%= t_th_small %>">pH</th>
+          <th class="<%= t_th_small %>">OD (mg/L)</th>
+          <th class="<%= t_th_small %>">Turb.(NTU)</th>
+          <th class="<%= t_th_small %>">Sal.(ppt)</th>
+          <th class="<%= t_th_small %>" colspan="2">Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @sensor_readings.each do |r| %>
+          <tr class="<%= t_tr %>">
+            <td class="<%= t_td_small %>"><%= l r.reading_time, format: :short %></td>
+            <td class="<%= t_td_small %>"><%= r.temp_c %></td>
+            <td class="<%= t_td_small %>"><%= r.ph %></td>
+            <td class="<%= t_td_small %>"><%= r.do_mg_l %></td>
+            <td class="<%= t_td_small %>"><%= r.turbidity_ntu %></td>
+            <td class="<%= t_td_small %>"><%= r.salinity_ppt %></td>
+            <td class="<%= t_td_small %>">
+              <div class="<%= t_actions %>">
+                <%= link_to "Ver", r, class: t_link_primary %> |
+                <%= button_to "Apagar", r, method: :delete, class: t_link_danger,
+                      form: { data: { turbo_confirm: "Tem certeza?" } } %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
