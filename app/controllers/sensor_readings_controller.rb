@@ -4,7 +4,7 @@ require "csv"
 class SensorReadingsController < ApplicationController
   before_action :authenticate_user!
   #before_action :set_pond, if: -> { params[:pond_id].present? }
-  before_action :set_sensor_reading, only: [:show, :edit, :update, :destroy]
+  before_action :set_sensor_reading, only: %i[show edit update destroy]
 
   # GET /ponds/:pond_id/sensor_readings/timeseries.json?n=...&metrics=...&stride=...&start_at=...&end_at=...
   def timeseries
@@ -74,16 +74,10 @@ class SensorReadingsController < ApplicationController
                                             end_at:   params[:end_at]) and return
     end
 
-    # 3) carregue o pond (se houver) já no escopo do usuário
-    @pond =
-      policy_scope(Pond).find(selected_pond_id) if selected_pond_id
+    @pond = policy_scope(Pond).find_by(id: selected_pond_id)
+    base  = policy_scope(SensorReading)
+    base  = base.where(pond_id: @pond.id) if @pond
 
-    # 4) monte a base conforme o pond selecionado
-    base = if @pond
-      policy_scope(SensorReading).where(pond_id: @pond.id)
-    else
-      policy_scope(SensorReading)
-    end
 
     # filtros de data (opcionais)
     if params[:start_at].present? && params[:end_at].present?
@@ -115,10 +109,11 @@ class SensorReadingsController < ApplicationController
 
   # GET /ponds/:pond_id/sensor_readings/:id ou /sensor_readings/:id
   def show
-    respond_to do |format|
-      format.html
-      format.json { render json: @sensor_reading.as_json(include: { pond: { only: [:id, :pond_name] } }) }
-    end
+    #respond_to do |format|
+    #  format.html
+    #  format.json { render json: @sensor_reading.as_json(include: { pond: { only: [:id, :pond_name] } }) }
+    #end
+    authorize @sensor_reading
   end
 
   # GET /ponds/:pond_id/sensor_readings/new
@@ -158,9 +153,9 @@ class SensorReadingsController < ApplicationController
   # DELETE /sensor_readings/:id
   def destroy
     authorize @sensor_reading
-    pond = @sensor_reading.pond
+    #pond = @sensor_reading.pond
     @sensor_reading.destroy
-    redirect_to pond_sensor_readings_path(pond), notice: "Leitura removida."
+    redirect_to sensor_readings_path, notice: "Leitura removida."
   end
 
   private

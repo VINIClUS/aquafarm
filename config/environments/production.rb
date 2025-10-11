@@ -1,6 +1,11 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
+  config.RAILS_SERVE_STATIC_FILES = true if ENV["RAILS_SERVE_STATIC_FILES"].present?
+  config.LOG_LEVEL = ENV.fetch("RAILS_LOG_LEVEL") { "info" }
+  config.SILENCE_HEALTHCHECK_PATH = "/up"
+  config.hosts << ".onrender.com"
+  config.WEB_CONCURRENCY = ENV.fetch("WEB_CONCURRENCY") { 2 }
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -58,7 +63,7 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "example.com" }
+  config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via rails credentials:edit.
   # config.action_mailer.smtp_settings = {

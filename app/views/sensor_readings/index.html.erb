@@ -78,9 +78,9 @@
             <td class="<%= t_td_small %>"><%= r.salinity_ppt %></td>
             <td class="<%= t_td_small %>">
               <div class="<%= t_actions %>">
-                <%= link_to "Ver", r, class: t_link_primary %> |
-                <%= button_to "Apagar", r, method: :delete, class: t_link_danger,
-                      form: { data: { turbo_confirm: "Tem certeza?" } } %>
+                <%= link_to "Ver", pond_sensor_reading_path(r.pond, r), class: t_link_primary %> |
+                <%= link_to 'Apagar', pond_sensor_reading_path(r.pond, r), class: t_link_danger,
+                            data: { turbo_method: :delete, turbo_confirm: 'Tem certeza?' } %>
               </div>
             </td>
           </tr>

@@ -13,7 +13,7 @@ class PondPolicy < ApplicationPolicy
 
   def index?   = true  # listado via policy_scope
   def show?    = owns_farm?
-  def create?  = owns_farm?
+  def create?  = owns_farm_by_farm_id?
   def update?  = owns_farm?
   def destroy? = owns_farm?
   
@@ -28,7 +28,11 @@ class PondPolicy < ApplicationPolicy
   def owns_farm?
     return false if record.farm_id.blank?
     # evita acessar record.farm quando ainda não carregou
+    #Farm.exists?(id: record.farm_id, user_id: user.id)
+    record.farm.user_id == user.id
+  end
+
+  def owns_farm_by_farm_id?
     Farm.exists?(id: record.farm_id, user_id: user.id)
-    #record.farm.user_id == user.id
   end
 end
