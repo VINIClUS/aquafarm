@@ -1,11 +1,19 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  config.RAILS_SERVE_STATIC_FILES = true if ENV["RAILS_SERVE_STATIC_FILES"].present?
-  config.LOG_LEVEL = ENV.fetch("RAILS_LOG_LEVEL") { "info" } 
-  config.SILENCE_HEALTHCHECK_PATH = "/up"
-  config.hosts << ".onrender.com"
-  config.WEB_CONCURRENCY = ENV.fetch("WEB_CONCURRENCY") { 2 }
+  config.hosts << /.*\.onrender\.com/
+
+  # Em produção, servir arquivos estáticos quando a env var estiver ativa
+  if ENV["RAILS_SERVE_STATIC_FILES"].present?
+    config.public_file_server.enabled = true
+  end
+
+  # Logar em STDOUT (útil pra Render)
+  if ENV["RAILS_LOG_TO_STDOUT"].present?
+    logger           = ActiveSupport::Logger.new($stdout)
+    logger.formatter = config.log_formatter
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
+  end
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
