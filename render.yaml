@@ -10,9 +10,9 @@ services:
 
     envVars:
       # Defina estes dois no painel do Render (Secrets). NÃO faça commit de valores.
-      - key: DATABASE_URL          # Ex.: Postgres do Supabase/Neon
-        value: postgresql://neondb_owner:npg_g7wByxpvON3F@ep-shiny-tree-ackmxdcb-pooler.sa-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
-        sync: false
+      #- key: DATABASE_URL          # Ex.: Postgres do Supabase/Neon
+      #  value: postgresql://neondb_owner:npg_g7wByxpvON3F@ep-shiny-tree-ackmxdcb-pooler.sa-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+      #  sync: false
       - key: RAILS_MASTER_KEY      # Conteúdo de config/master.key
         value: ace710391b760f9256851383f0291054
         sync: false
