@@ -17,6 +17,9 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+# Serialize and deserialize Ruby objects to and from JSON.
+gem "active_model_serializers", "~> 0.10.13"
+
 # Handle Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem "rack-cors"
 
