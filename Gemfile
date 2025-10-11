@@ -49,7 +49,7 @@ gem "thruster", require: false
 # gem "image_processing", "~> 1.2"
 
 # Multitenancy row-based
-gem 'acts_as_tenant', '~> 0.5.0'
+gem 'acts_as_tenant', '~> 1.0.1'
 
 # Authentication and authorization for Rails applications [https://github.com/heartcombo/devise]
 gem 'devise', '~> 4.9'
