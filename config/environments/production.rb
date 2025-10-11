@@ -2,7 +2,7 @@ require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
   config.RAILS_SERVE_STATIC_FILES = true if ENV["RAILS_SERVE_STATIC_FILES"].present?
-  config.LOG_LEVEL = ENV.fetch("RAILS_LOG_LEVEL") { "info" }
+  config.LOG_LEVEL = ENV.fetch("RAILS_LOG_LEVEL") { "info" } 
   config.SILENCE_HEALTHCHECK_PATH = "/up"
   config.hosts << ".onrender.com"
   config.WEB_CONCURRENCY = ENV.fetch("WEB_CONCURRENCY") { 2 }

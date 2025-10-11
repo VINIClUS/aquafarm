@@ -17,6 +17,9 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+# Handle Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
+gem "rack-cors"
+
 # Use Tailwind CSS framework [https://tailwindcss.com/docs/guides/ruby-on-rails]
 gem "tailwindcss-rails", "~> 4.0"
 
