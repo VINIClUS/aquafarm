@@ -23,5 +23,39 @@ services:
     depends_on:
       - elasticsearch
 
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.15.0
+    container_name: filebeat
+    user: root
+    volumes:
+      - ./log:/usr/share/filebeat/logs:ro
+      - ./filebeat.yml:/tmp/filebeat.yml:ro
+    command:
+      - sh
+      - -c
+      - |
+        cp /tmp/filebeat.yml /usr/share/filebeat/filebeat.yml
+        chmod 0644 /usr/share/filebeat/filebeat.yml
+        exec filebeat -e --strict.perms=false
+    depends_on:
+      - kibana
+      - elasticsearch
+    
+  filebeat_ingest:
+    image: docker.elastic.co/beats/filebeat:8.15.0
+    container_name: filebeat_ingest
+    user: root
+    depends_on:
+      - elasticsearch
+      - kibana
+    volumes:
+      - ./log/ingest.log:/harvest-logs/ingest.log:ro
+      - ./filebeat_ingest.yml:/usr/share/filebeat/filebeat.yml:ro
+      - filebeat_ingest_data:/usr/share/filebeat/data
+    command: ["-e", "--strict.perms=false"]
+    restart: unless-stopped
+
+
 volumes:
   esdata:
+  filebeat_ingest_data:

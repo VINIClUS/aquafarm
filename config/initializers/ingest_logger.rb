@@ -15,6 +15,12 @@ def build_ingest_logger
 
   logger.level = Logger::INFO
   logger.progname = "ingest"
+  
+  logger.formatter = proc { |_sev, _time, _prog, msg|
+    str = msg.is_a?(String) ? msg : msg.to_json
+    str.end_with?("\n") ? str : "#{str}\n"
+  }
+
   logger
 end
 

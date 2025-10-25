@@ -1,0 +1,26 @@
+filebeat.inputs:
+  - type: filestream            # em vez de "log" (deprecated)
+    id: rails-logs
+    enabled: true
+    paths:
+      - /usr/share/filebeat/logs/*.log
+    # Se seus logs são JSON por linha (ex.: INGEST_LOGGER.info j(...))
+    #parsers:
+    #  - ndjson:
+    #      target: ""            # coloca campos na raiz
+    #      add_error_key: true
+    #      overwrite_keys: true
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]   # << não use localhost no contêiner
+
+setup.kibana:
+  host: "http://kibana:5601"
+
+# Usa data streams (aparece como logs-* no Kibana/Observability)
+data_streams.enabled: true
+fields:
+  data_stream.type: logs
+  data_stream.dataset: aquafarm.rails
+  data_stream.namespace: default
+fields_under_root: true

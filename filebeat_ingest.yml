@@ -1,0 +1,73 @@
+filebeat.inputs:
+  - type: filestream
+    id: ingest-logs
+    enabled: true
+    paths: ["/harvest-logs/ingest.log"]
+
+    # Seu arquivo tem comentários/linhas iniciando com '#'
+    exclude_lines: ['^\s*#']
+
+    parsers:
+      - ndjson:
+          target: "json"           # <- NÃO mescla no root
+          add_error_key: true
+          overwrite_keys: false
+
+    processors:
+      # Direciona explicitamente para o data stream logs-aquafarm.ingest-default
+      - add_fields:
+          target: data_stream
+          fields:
+            data_stream.type: logs
+            data_stream.dataset: aquafarm.ingest
+            data_stream.namespace: default
+
+      - drop_fields:
+          when:
+            has_fields: ["json.data_stream"]
+          fields: ["json.data_stream"]  # Evita conflito com data_stream do ECS
+      
+      - drop_fields:
+          fields: ["input", "log", "host", "agent", "ecs"]  # Limpa campos desnecessários
+
+      - drop_fields:
+          when:
+            has_fields: ["json.reading_time"]
+          fields: ["json.reading_time"]
+
+      # Evita colisão com ECS event.*
+      - rename:
+          fields:
+            - from: "event"
+              to: "aquafarm.event"
+          ignore_missing: true
+
+      # Converte tipos comuns
+      - convert:
+          ignore_missing: true
+          fail_on_error: false
+          fields:
+            - {from: 'json.pond_id',      to: 'pond_id',      type: long}
+            - {from: 'json.duration_ms',  to: 'duration_ms',  type: long}
+            - {from: 'json.has_external', to: 'has_external', type: boolean}
+      # Usa 'reading_time' como @timestamp (troque para 'timestamp' se preferir)
+      - timestamp:
+          field: "json.ts"
+          target_field: "@timestamp"
+          ignore_failure: false
+          layouts:
+            - "RFC3339"
+            - "RFC3339Nano"
+            - "2006-01-02T15:04:05Z07:00"
+            - "2006-01-02 15:04:05"
+          timezone: 'UTC'
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]
+
+# Desative o setup automático do Filebeat para não poluir com templates/policies próprias (opcional, mas ajuda)
+setup.template.enabled: false
+setup.ilm.enabled: false
+
+logging.level: debug
+logging.selectors: ["elasticsearch", "publish"]

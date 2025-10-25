@@ -5,9 +5,9 @@ require "uri"
 
 URL   = ENV.fetch("URL",   "http://localhost:3000/ingest/sensor_readings")
 POND  = ENV.fetch("POND",  "1").to_i
-TOTAL = ENV.fetch("N",     "1000").to_i
+TOTAL = ENV.fetch("N",     "40000").to_i
 POOL  = ENV.fetch("POOL",  "50").to_i
-TOKEN = ENV["INGEST_TOKEN"] # opcional
+#TOKEN = ENV["INGEST_TOKEN"] # opcional
 
 uri  = URI(URL)
 q    = Queue.new
@@ -18,11 +18,11 @@ stats = Hash.new(0)
 workers = POOL.times.map do
   Thread.new do
     http = Net::HTTP.new(uri.host, uri.port)
-    http.read_timeout = 30
+    http.read_timeout = 500
     while (i = (q.pop(true) rescue nil))
       ts = (Time.now.utc - i)
       body = {
-        pond_id: POND,
+        pond_id: POND + rand(1),
         reading_time: ts,
         metrics: {
           temp_c: 24 + rand * 8,
@@ -31,7 +31,7 @@ workers = POOL.times.map do
         }
       }.to_json
       req = Net::HTTP::Post.new(uri, "Content-Type" => "application/json")
-      req["X-INGEST-TOKEN"] = TOKEN if TOKEN
+      #req["X-INGEST-TOKEN"] = TOKEN if TOKEN
       req.body = body
 
       begin

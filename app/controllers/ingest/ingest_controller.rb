@@ -20,6 +20,7 @@ class Ingest::IngestController < ActionController::API
       event: "ingest.queued",
       job_id: job.job_id,
       provider_job_id: (job.try(:provider_job_id) rescue nil),
+      worker: job.queue_name,
       pond_id: payload["pond_id"],
       has_external: payload.key?("pond_external_id"),
       reading_time: payload["reading_time"],
