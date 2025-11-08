@@ -13,7 +13,7 @@ API para ingestão de dados de sensores para o projeto AquaFarm. A aplicação �
 
 -   **Backend**: Ruby on Rails 7
 -   **Banco de Dados**: PostgreSQL
--   **Jobs em Background**: Sidekiq (ou o backend default do Active Job)
+-   **Jobs em Background**: backend default do Active Job
 -   **Testes**: RSpec
 
 ## Pré-requisitos
