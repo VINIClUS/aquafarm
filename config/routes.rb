@@ -29,10 +29,11 @@ Rails.application.routes.draw do
   end
   resources :sensor_readings, only: [:index, :show]
 
-  # config/routes.rb
-  namespace :ingest, defaults: { format: :json } do
-    resources :sensor_readings, only: [:create]
-  end
+  #namespace :ingest, defaults: { format: :json } do
+    #resources :sensor_readings, only: [:create]
+  #end
+
+  post "ingest/sensor_readings", to: "ingest/ingest#sensor_readings"
 
   root to: 'farms#index'
 end

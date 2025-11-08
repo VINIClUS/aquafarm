@@ -15,7 +15,7 @@ RSpec.describe "Timeseries endpoint", type: :request do
 
   it "retorna série temporal com as métricas pedidas" do
     get timeseries_pond_sensor_readings_path(pond, format: :json), params: { n: 5, metrics: "temp_c,ph", stride: 2 }
-    expect(response).to have_http_status(:accepted)
+    expect(response).to have_http_status(:ok)
     json = JSON.parse(response.body)
     expect(json["pond_id"]).to eq(pond.id)
     expect(json["metrics"]).to eq(%w[temp_c ph])

@@ -73,10 +73,14 @@ A API possui um endpoint principal para a ingestão de leituras de sensores.
 
     ```json
     {
-      "sensor_reading": {
-        "temperature": 25.5,
+      "pond_id": "pond.id",
+      "reading_time": "",
+      "metrics": {
+        "temp_c": 25.5,
         "ph": 7.1,
-        "water_level": 89.2
+        "do_mg_l": 89.2,
+        "turbidity_ntu": 4.1,
+        "salinity_ppt": 12.1
       }
     }
     ```
@@ -86,15 +90,9 @@ A API possui um endpoint principal para a ingestão de leituras de sensores.
 ```bash
 curl -X POST http://localhost:3000/ingest/sensor_readings \
 -H "Content-Type: application/json" \
--d '{
-      "sensor_reading": {
-        "temperature": 25.5,
-        "ph": 7.1,
-        "water_level": 89.2
-      }
-    }'
+-d '{"pond_id":pond_id,"reading_time":"","metrics":{"temp_c":29.1,"ph":7.0,"do_mg_l":6.3,"turbidity_ntu":4.1, "salinity_ppt":12.1}}'
 ```
-Uma resposta `201 Created` com o corpo vazio indica que os dados foram recebidos com sucesso e agendados para processamento em background.
+Uma resposta `202 Accepted` com o corpo vazio indica que os dados foram recebidos com sucesso e agendados para processamento em background.
 
 ## Executando os Testes
 
