@@ -13,14 +13,17 @@ class IngestSensorReadingJob < ApplicationJob
     reading_time = parse_time(payload["reading_time"]) || Time.zone.now
     metrics = payload["metrics"] || {}
 
-    SensorReading.create!(
-      pond: pond,
-      reading_time: reading_time,
-      temp_c: metrics["temp_c"],
-      ph: metrics["ph"],
-      do_mg_l: metrics["do_mg_l"],
-      turbidity_ntu: metrics["turbidity_ntu"],
-      salinity_ppt: metrics["salinity_ppt"]
+    SensorReading.upsert(
+      {
+        pond: pond,
+        reading_time: reading_time,
+        temp_c: metrics["temp_c"],
+        ph: metrics["ph"],
+        do_mg_l: metrics["do_mg_l"],
+        turbidity_ntu: metrics["turbidity_ntu"],
+        salinity_ppt: metrics["salinity_ppt"]
+      },
+      unique_by: [:pond_id, :reading_time]
     )
   rescue => e
     Rails.logger.error j("[IngestSensorReadingJob] Failed: #{e.class} - #{e.message}")
