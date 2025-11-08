@@ -22,7 +22,6 @@ Antes de começar, garanta que você tenha os seguintes softwares instalados em 
 -   Ruby (versão 3.1.2 ou superior)
 -   Bundler
 -   PostgreSQL
--   Redis (se estiver usando Sidekiq)
 
 ## Começando
 
