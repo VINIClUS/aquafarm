@@ -1,12 +1,4 @@
-Com certeza! Analisei a estrutura do seu repositório no GitHub e preparei uma sugestão de README.md completa e bem estruturada.
-
-Este README inclui uma descrição do projeto, as tecnologias utilizadas, um guia passo a passo para instalação e configuração, instruções de uso da API e como rodar os testes.
-
----
-
 # AquaFarm API
-
-![Build Status](https://github.com/VINIClUS/aquafarm/actions/workflows/main.yml/badge.svg)
 
 API para ingestão de dados de sensores para o projeto AquaFarm. A aplicação é projetada para receber leituras de sensores de forma assíncrona, garantindo alta performance e escalabilidade.
 
